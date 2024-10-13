@@ -1,33 +1,58 @@
 ﻿using DiophantineEquationsSystemSolverCSharp;
 
-int n = 1, m = 2;
-double[] c = [-2, 0];
-var matrix = new Matrix([[3, 4, 0,-8],[7, 0, 5,-6]]);
-var originRowsCount = matrix.RowCount;
-var freeMembersCount = matrix.ColumnCount - matrix.RowCount - 1;
+(var originRowsCount, var originColumnsCount) = Console.ReadLine()!.ToIntEnum(' ');
+
+var nums = new double[originRowsCount][];
+for (int i = 0; i < originRowsCount; i++)
+    nums[i] = Console.ReadLine()!.ToDoubles();
+
+var matrix = new Matrix(nums);
 matrix.Expand();
 
-
-try 
+try
 {
     for (var rowIndex = 0; rowIndex < originRowsCount; rowIndex++)
     {
         var nonZeroNumberIndex = ZeroRow(matrix, rowIndex);
-        SwapColumns(matrix, rowIndex, nonZeroNumberIndex);
+        if (nonZeroNumberIndex != 0)
+            SwapColumns(matrix, rowIndex, nonZeroNumberIndex);
     }
-    WriteSolution(matrix, originRowsCount, freeMembersCount);
+    WriteSolution(matrix, originRowsCount, GetFreeVariablesCount(matrix, originRowsCount));
 }
 catch (Exception e)
 {
+#if DEBUG
     Console.WriteLine(e.Message);
+#endif
+    Console.WriteLine("NO SOLUTIONS");
 }
 
-void WriteSolution(Matrix matrix, int originRowsCount, int freeMembersCount)
+int GetFreeVariablesCount(Matrix matrix, int originRowsCount)
 {
+    var count = 0;
+
+    for (int i = 0; i < matrix.ColumnCount - 1; i++)
+        if (IsColumnZeroed(matrix, originRowsCount, i))
+            count++;
+
+    return count;
+}
+
+bool IsColumnZeroed(Matrix matrix, int originRowsCount, int columnNumber)
+{
+    for (int i = 0; i < originRowsCount; i++)
+        if (matrix[i][columnNumber] != 0)
+            return false;
+    return true;
+}
+
+void WriteSolution(Matrix matrix, int originRowsCount, int freeVariablesCount)
+{
+    Console.WriteLine(freeVariablesCount);
     for (int i = originRowsCount; i < matrix.RowCount; i++)
     {
-        for (int j = 1; j <= freeMembersCount + 1; j++)
-            Console.Write(matrix[i][^j] + " ");
+        for (int j = matrix.ColumnCount - freeVariablesCount - 1; j < matrix.ColumnCount; j++)
+            Console.Write(matrix[i][j] + " ");
         Console.WriteLine();
     }
 }
@@ -54,7 +79,7 @@ int ZeroRow(Matrix matrix, int rowNumber)
 }
 
 bool IsRowZeroed(Matrix matrix, int rowNumber) =>
-    matrix[rowNumber].Count(val => val != 0) == rowNumber + 1;
+    matrix[rowNumber].Skip(rowNumber + 1).All(val => val == 0);
 
 void Subtract(Matrix matrix, int rowNumber, int minValueIndex)
 {

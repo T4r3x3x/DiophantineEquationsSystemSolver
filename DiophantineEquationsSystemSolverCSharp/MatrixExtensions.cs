@@ -22,8 +22,8 @@
         {
             var expanded = InitializeExpanded(matrix);
 
-            for (var i = 0; i < matrix.ColumnCount - 1; i++)
-                expanded[matrix.RowCount + i] = GenerateAdditionalRow(i, matrix.ColumnCount);
+            for (var i = matrix.RowCount; i < expanded.Length; i++)
+                expanded[i] = GenerateAdditionalRow(i - matrix.RowCount, matrix.ColumnCount);
 
             matrix.Values = expanded;
         }
@@ -37,13 +37,13 @@
             return expanded;
         }
 
-        private static double[] GenerateAdditionalRow(int rowNumber, int length)
+        private static double[] GenerateAdditionalRow(int additionalRowNumber, int length)
         {
             var additionalRow = new double[length];
             for (var j = 0; j < length; j++)
                 additionalRow[j] = j switch
                 {
-                    _ when j == rowNumber => 1,
+                    _ when j == additionalRowNumber => 1,
                     _ => 0
                 };
 
