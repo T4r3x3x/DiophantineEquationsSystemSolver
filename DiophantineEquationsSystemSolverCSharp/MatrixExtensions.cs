@@ -10,7 +10,7 @@
 
             for (var i = rowIndex; i < row.Length; i++)
                 if (Math.Abs(row[i]) < min && row[i] != 0)
-                    min = row[i];
+                    (min, index) = (row[i], i);
 
             return min switch
             {
