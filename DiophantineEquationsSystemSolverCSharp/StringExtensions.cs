@@ -3,10 +3,10 @@
     public static class StringExtensions
     {
         public static IEnumerable<int> ToIntEnum(this string line, char separator = ' ') =>
-            line.Split(separator).Select(x => Convert.ToInt32(x));
+            line.Split(separator).Where(x => !string.IsNullOrEmpty(x)).Select(x => Convert.ToInt32(x));
 
 
         public static double[] ToDoubles(this string line, char separator = ' ') =>
-            line.Split(separator).Select(Convert.ToDouble).ToArray();
+            line.Split(separator).Where(x => !string.IsNullOrEmpty(x)).Select(Convert.ToDouble).ToArray();
     }
 }

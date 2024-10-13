@@ -3,12 +3,12 @@
     public static class MatrixExtensions
     {
 
-        public static (int index, bool isFound) Min(this Matrix matrix, int rowIndex)
+        public static (int index, bool isFound) Min(this Matrix matrix, int rowIndex, int count)
         {
             var row = matrix[rowIndex];
             (var min, var index) = (double.MaxValue, 0);
 
-            for (var i = rowIndex; i < row.Length - 1; i++)
+            for (var i = count; i < row.Length - 1; i++)
                 if (Math.Abs(row[i]) < min && row[i] != 0)
                     (min, index) = (row[i], i);
 

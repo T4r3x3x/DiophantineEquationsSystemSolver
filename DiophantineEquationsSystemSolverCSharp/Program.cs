@@ -1,6 +1,6 @@
 ﻿using DiophantineEquationsSystemSolverCSharp;
 
-(var originRowsCount, var originColumnsCount) = Console.ReadLine()!.ToIntEnum(' ');
+(var originRowsCount, var originColumnsCount) = Console.ReadLine()!.ToIntEnum();
 
 var nums = new double[originRowsCount][];
 for (int i = 0; i < originRowsCount; i++)
@@ -8,13 +8,13 @@ for (int i = 0; i < originRowsCount; i++)
 
 var matrix = new Matrix(nums);
 matrix.Expand();
-
+Console.WriteLine();
 try
 {
     for (var rowIndex = 0; rowIndex < originRowsCount; rowIndex++)
     {
         var nonZeroNumberIndex = ZeroRow(matrix, rowIndex);
-        if (nonZeroNumberIndex != 0)
+        if (NeedToSwap(matrix, rowIndex))
             SwapColumns(matrix, rowIndex, nonZeroNumberIndex);
     }
     WriteSolution(matrix, originRowsCount, GetFreeVariablesCount(matrix, originRowsCount));
@@ -26,6 +26,9 @@ catch (Exception e)
 #endif
     Console.WriteLine("NO SOLUTIONS");
 }
+
+bool NeedToSwap(Matrix matrix, int rowNumber) =>
+    rowNumber < matrix.ColumnCount - 1 && matrix[rowNumber][rowNumber] != 0;
 
 int GetFreeVariablesCount(Matrix matrix, int originRowsCount)
 {
@@ -67,9 +70,10 @@ void SwapColumns(Matrix matrix, int rowNumber, int minValueIndex)
 int ZeroRow(Matrix matrix, int rowNumber)
 {
     var index = 0;
-    while (!IsRowZeroed(matrix, rowNumber))
+    var count = rowNumber < matrix.ColumnCount - 1 ? rowNumber : matrix.ColumnCount - 2;
+    while (!IsRowZeroed(matrix, rowNumber, count))
     {
-        var res = matrix.Min(rowNumber);
+        var res = matrix.Min(rowNumber, count);
         index = res.index;
         if (!res.isFound)
             throw new("Min value not found");
@@ -78,8 +82,8 @@ int ZeroRow(Matrix matrix, int rowNumber)
     return index;
 }
 
-bool IsRowZeroed(Matrix matrix, int rowNumber) =>
-    matrix[rowNumber].Skip(rowNumber + 1).All(val => val == 0);
+bool IsRowZeroed(Matrix matrix, int rowNumber, int count) =>
+    matrix[rowNumber].Skip(count + 1).All(val => val == 0);
 
 void Subtract(Matrix matrix, int rowNumber, int minValueIndex)
 {

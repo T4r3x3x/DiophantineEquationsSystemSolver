@@ -8,6 +8,5 @@
             first = (array.Length != 0 ? array[0] : default) ?? throw new InvalidOperationException();
             second = (array.Length > 1 ? array[1] : default) ?? throw new InvalidOperationException();
         }
-
     }
 }
