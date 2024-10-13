@@ -31,7 +31,7 @@
 
         private static double[][] InitializeExpanded(Matrix matrix)
         {
-            var expanded = new double[matrix.RowCount + matrix.ColumnCount][];
+            var expanded = new double[matrix.RowCount + matrix.ColumnCount - 1][];
             for (var i = 0; i < matrix.RowCount; i++)
                 expanded[i] = matrix[i];
 
