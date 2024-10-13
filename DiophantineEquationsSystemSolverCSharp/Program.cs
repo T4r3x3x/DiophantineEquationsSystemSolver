@@ -17,9 +17,9 @@ try
     }
     Console.WriteLine("A");
 }
-catch
+catch (Exception e)
 {
-    Console.WriteLine("TI CHE DEBIL?");
+    Console.WriteLine(e.Message);
 }
 
 void SwapColumns(Matrix matrix, int rowNumber, int minValueIndex)
@@ -32,25 +32,19 @@ void SwapColumns(Matrix matrix, int rowNumber, int minValueIndex)
 int ZeroRow(Matrix matrix, int rowNumber)
 {
     var index = 0;
-    while (!isRowZeroed(matrix, rowNumber))
+    while (!IsRowZeroed(matrix, rowNumber))
     {
         var res = matrix.Min(rowNumber);
         index = res.index;
         if (!res.isFound)
-            throw new("KURWA");
+            throw new("Min value not found");
         Subtract(matrix, rowNumber, res.index);
     }
     return index;
 }
 
-bool isRowZeroed(Matrix matrix, int rowNumber)
-{
-    for (var i = rowNumber + 1; i < matrix.ColumnCount; i++)
-        if (matrix[rowNumber][i] != 0)
-            return false;
-
-    return true;
-}
+bool IsRowZeroed(Matrix matrix, int rowNumber) =>
+    matrix[rowNumber].Count(val => val != 0) == rowNumber + 1;
 
 void Subtract(Matrix matrix, int rowNumber, int minValueIndex)
 {
@@ -60,18 +54,18 @@ void Subtract(Matrix matrix, int rowNumber, int minValueIndex)
 
 int GetMinuend(Matrix matrix, int rowNumber, int minValueIndex)
 {
-    for (var i = 0; i < matrix[rowNumber].Length; i++)
+    for (var i = rowNumber; i < matrix[rowNumber].Length; i++)
         if (matrix[rowNumber][i] != 0 && i != minValueIndex)
             return i;
 
-    throw new("kurwa");
+    throw new("Can't find minuend");
 }
 
 void SubtractColumns(Matrix matrix, int minuendColumnIndex, int subtrahendColumnIndex, int rowNumber)
 {
     var coef = (int)(matrix[rowNumber][minuendColumnIndex] / matrix[rowNumber][subtrahendColumnIndex]);
     if (coef == 0)
-        throw new("KURWA");
+        throw new("Coef is zerp");
     for (var i = rowNumber; i < matrix.RowCount; i++)
         matrix[i][minuendColumnIndex] -= matrix[i][subtrahendColumnIndex] * coef;
 }
