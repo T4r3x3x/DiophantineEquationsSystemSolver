@@ -76,14 +76,14 @@ int ZeroRow(Matrix matrix, int rowNumber)
         var res = matrix.Min(rowNumber, count);
         index = res.index;
         if (!res.isFound)
-            throw new("Min value not found");
+            throw new($"Min value not found at row: {rowNumber} |" + string.Join(' ', matrix[rowNumber]));
         Subtract(matrix, rowNumber, res.index);
     }
     return index;
 }
 
 bool IsRowZeroed(Matrix matrix, int rowNumber, int count) =>
-    matrix[rowNumber].Skip(count + 1).All(val => val == 0);
+    matrix[rowNumber].Skip(count).Count(val => val != 0) <= 1;
 
 void Subtract(Matrix matrix, int rowNumber, int minValueIndex)
 {
