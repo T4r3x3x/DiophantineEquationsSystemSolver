@@ -8,7 +8,7 @@
             var row = matrix[rowIndex];
             (var min, var index) = (double.MaxValue, 0);
 
-            for (var i = rowIndex; i < row.Length; i++)
+            for (var i = rowIndex; i < row.Length - 1; i++)
                 if (Math.Abs(row[i]) < min && row[i] != 0)
                     (min, index) = (row[i], i);
 
@@ -18,15 +18,14 @@
                 _ => (index, true)
             };
         }
-        public static Matrix Expand(this Matrix matrix)
+        public static void Expand(this Matrix matrix)
         {
             var expanded = InitializeExpanded(matrix);
 
-            for (var i = matrix.RowCount; i <= matrix.ColumnCount; i++)
-                expanded[i] = GenerateAdditionalRow(i - matrix.RowCount, matrix.ColumnCount);
+            for (var i = 0; i < matrix.ColumnCount - 1; i++)
+                expanded[matrix.RowCount + i] = GenerateAdditionalRow(i, matrix.ColumnCount);
 
             matrix.Values = expanded;
-            return matrix;
         }
 
         private static double[][] InitializeExpanded(Matrix matrix)

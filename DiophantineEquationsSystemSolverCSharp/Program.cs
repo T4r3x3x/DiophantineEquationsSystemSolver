@@ -2,24 +2,34 @@
 
 int n = 1, m = 2;
 double[] c = [-2, 0];
-var matrix = new Matrix([[3, 4, 0, -8], [7, 0, 5, -6]]);
+var matrix = new Matrix([[3, 4, 0,-8],[7, 0, 5,-6]]);
 var originRowsCount = matrix.RowCount;
+var freeMembersCount = matrix.ColumnCount - matrix.RowCount - 1;
+matrix.Expand();
 
-var expanded = matrix.Expand();
 
-
-try
+try 
 {
     for (var rowIndex = 0; rowIndex < originRowsCount; rowIndex++)
     {
         var nonZeroNumberIndex = ZeroRow(matrix, rowIndex);
         SwapColumns(matrix, rowIndex, nonZeroNumberIndex);
     }
-    Console.WriteLine("A");
+    WriteSolution(matrix, originRowsCount, freeMembersCount);
 }
 catch (Exception e)
 {
     Console.WriteLine(e.Message);
+}
+
+void WriteSolution(Matrix matrix, int originRowsCount, int freeMembersCount)
+{
+    for (int i = originRowsCount; i < matrix.RowCount; i++)
+    {
+        for (int j = 1; j <= freeMembersCount + 1; j++)
+            Console.Write(matrix[i][^j] + " ");
+        Console.WriteLine();
+    }
 }
 
 void SwapColumns(Matrix matrix, int rowNumber, int minValueIndex)
@@ -65,7 +75,7 @@ void SubtractColumns(Matrix matrix, int minuendColumnIndex, int subtrahendColumn
 {
     var coef = (int)(matrix[rowNumber][minuendColumnIndex] / matrix[rowNumber][subtrahendColumnIndex]);
     if (coef == 0)
-        throw new("Coef is zerp");
+        throw new("Coef is zero");
     for (var i = rowNumber; i < matrix.RowCount; i++)
         matrix[i][minuendColumnIndex] -= matrix[i][subtrahendColumnIndex] * coef;
 }
