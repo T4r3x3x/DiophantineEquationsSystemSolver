@@ -74,7 +74,8 @@ void WriteSolution(Matrix matrix, int originRowsCount, int freeVariablesCount)
     Console.WriteLine(freeVariablesCount);
     for (int i = originRowsCount; i < matrix.RowCount; i++)
     {
-        for (int j = matrix.ColumnCount - 1; j >= matrix.ColumnCount - freeVariablesCount - 1; j--)
+        Console.Write(matrix[i][^1] + " ");
+        for (int j = matrix.ColumnCount - freeVariablesCount - 1; j < matrix.ColumnCount-1; j++)
             Console.Write(matrix[i][j] + " ");
         Console.WriteLine();
     }
