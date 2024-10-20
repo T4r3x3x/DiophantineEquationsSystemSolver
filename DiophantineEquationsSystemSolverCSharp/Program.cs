@@ -1,11 +1,13 @@
 ﻿using DiophantineEquationsSystemSolverCSharp;
 
-(var originRowsCount, var originColumnsCount) = Console.ReadLine()!.ToIntEnum();
+(var originRowsCount, var originColumnsCount) = Console.ReadLine()!.ToInts();
 
-var nums = new double[originRowsCount][];
+var nums = new int[originRowsCount][];
 for (int i = 0; i < originRowsCount; i++)
-    nums[i] = Console.ReadLine()!.ToDoubles();
-
+{
+    nums[i] = Console.ReadLine()!.ToInts();
+    nums[i][^1] *= -1;
+}
 var matrix = new Matrix(nums);
 matrix.Expand();
 Console.WriteLine();
@@ -14,10 +16,14 @@ try
     for (var rowIndex = 0; rowIndex < originRowsCount; rowIndex++)
     {
         var nonZeroNumberIndex = ZeroRow(matrix, rowIndex);
-        if (NeedToSwap(matrix, rowIndex))
+        if (NeedToSwap(matrix, rowIndex, nonZeroNumberIndex))
             SwapColumns(matrix, rowIndex, nonZeroNumberIndex);
     }
+    if (!IsColumnZeroed(matrix, originRowsCount, originColumnsCount))
+        throw new ArgumentException("Last column contains non zero elements");
+    SimplifySolution(matrix);
     WriteSolution(matrix, originRowsCount, GetFreeVariablesCount(matrix, originRowsCount));
+
 }
 catch (Exception e)
 {
@@ -27,8 +33,22 @@ catch (Exception e)
     Console.WriteLine("NO SOLUTIONS");
 }
 
-bool NeedToSwap(Matrix matrix, int rowNumber) =>
-    rowNumber < matrix.ColumnCount - 1 && matrix[rowNumber][rowNumber] != 0;
+void SimplifySolution(Matrix matrix)
+{
+    for (int i = originRowsCount; i < matrix.RowCount; i++)
+    {
+        var a = matrix[i];
+        //var gcd = GCDMat();
+
+    }
+}
+
+
+bool NeedToSwap(Matrix matrix, int rowNumber, int nonZeroNumberIndex)
+{
+    var skipCount = rowNumber < matrix.ColumnCount - 1 ? rowNumber + 1 : matrix.ColumnCount - 1;
+    return matrix[rowNumber].Skip(skipCount).Any(val => val != 0);
+}
 
 int GetFreeVariablesCount(Matrix matrix, int originRowsCount)
 {
@@ -54,7 +74,7 @@ void WriteSolution(Matrix matrix, int originRowsCount, int freeVariablesCount)
     Console.WriteLine(freeVariablesCount);
     for (int i = originRowsCount; i < matrix.RowCount; i++)
     {
-        for (int j = matrix.ColumnCount - freeVariablesCount - 1; j < matrix.ColumnCount; j++)
+        for (int j = matrix.ColumnCount - 1; j >= matrix.ColumnCount - freeVariablesCount - 1; j--)
             Console.Write(matrix[i][j] + " ");
         Console.WriteLine();
     }
@@ -83,7 +103,7 @@ int ZeroRow(Matrix matrix, int rowNumber)
 }
 
 bool IsRowZeroed(Matrix matrix, int rowNumber, int count) =>
-    matrix[rowNumber].Skip(count).Count(val => val != 0) <= 1;
+    matrix[rowNumber].Skip(count).SkipLast(1).Count(val => val != 0) <= 1 && matrix[rowNumber][^1] == 0;
 
 void Subtract(Matrix matrix, int rowNumber, int minValueIndex)
 {
@@ -105,6 +125,16 @@ void SubtractColumns(Matrix matrix, int minuendColumnIndex, int subtrahendColumn
     var coef = (int)(matrix[rowNumber][minuendColumnIndex] / matrix[rowNumber][subtrahendColumnIndex]);
     if (coef == 0)
         throw new("Coef is zero");
-    for (var i = rowNumber; i < matrix.RowCount; i++)
+    for (var i = 0; i < matrix.RowCount; i++)
         matrix[i][minuendColumnIndex] -= matrix[i][subtrahendColumnIndex] * coef;
+}
+
+int GCDMat(int[] numbers)
+{
+    return numbers.Aggregate(GCD);
+}
+
+int GCD(int a, int b)
+{
+    return b == 0 ? a : GCD(b, a % b);
 }

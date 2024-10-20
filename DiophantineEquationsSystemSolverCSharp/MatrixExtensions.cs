@@ -28,18 +28,18 @@
             matrix.Values = expanded;
         }
 
-        private static double[][] InitializeExpanded(Matrix matrix)
+        private static int[][] InitializeExpanded(Matrix matrix)
         {
-            var expanded = new double[matrix.RowCount + matrix.ColumnCount - 1][];
+            var expanded = new int[matrix.RowCount + matrix.ColumnCount - 1][];
             for (var i = 0; i < matrix.RowCount; i++)
                 expanded[i] = matrix[i];
 
             return expanded;
         }
 
-        private static double[] GenerateAdditionalRow(int additionalRowNumber, int length)
+        private static int[] GenerateAdditionalRow(int additionalRowNumber, int length)
         {
-            var additionalRow = new double[length];
+            var additionalRow = new int[length];
             for (var j = 0; j < length; j++)
                 additionalRow[j] = j switch
                 {

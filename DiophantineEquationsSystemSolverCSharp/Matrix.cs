@@ -2,21 +2,23 @@
 
 namespace DiophantineEquationsSystemSolverCSharp
 {
-    public class Matrix(double[][] values) : IEnumerable<double[]>
+    public class Matrix(int[][] values) : IEnumerable<int[]>
     {
-        public double[][] Values = values;
+        public int[][] Values = values;
 
-        public double this[int row, int column]
+        public int this[int row, int column]
         {
             get => Values[row][column];
             set => Values[row][column] = value;
         }
 
-        public double[] this[int row] => Values[row];
+        public int[] this[int row] => Values[row];
+
         public int RowCount => Values.Length;
 
         public int ColumnCount => Values[0].Length;
-        public IEnumerator<double[]> GetEnumerator() => (IEnumerator<double[]>)Values.GetEnumerator();
+
+        public IEnumerator<int[]> GetEnumerator() => (IEnumerator<int[]>)Values.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
