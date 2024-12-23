@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "DiophantineEquationsSystemSolver", "DiophantineEquationsSystemSolver\DiophantineEquationsSystemSolver.fsproj", "{1F6E69F1-1513-4DD4-B707-ED1B2CAA711E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiophantineEquationsSystemSolverCSharp", "DiophantineEquationsSystemSolverCSharp\DiophantineEquationsSystemSolverCSharp.csproj", "{3E2AFFA6-7B48-40A8-BD54-289873201A9B}"
 EndProject
 Global
@@ -10,10 +8,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1F6E69F1-1513-4DD4-B707-ED1B2CAA711E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F6E69F1-1513-4DD4-B707-ED1B2CAA711E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F6E69F1-1513-4DD4-B707-ED1B2CAA711E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F6E69F1-1513-4DD4-B707-ED1B2CAA711E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3E2AFFA6-7B48-40A8-BD54-289873201A9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3E2AFFA6-7B48-40A8-BD54-289873201A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E2AFFA6-7B48-40A8-BD54-289873201A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
